@@ -1,18 +1,34 @@
+<!-- TodoForm.vue -->
 <template>
-    <div>
-
-    </div>
+    <form @submit.prevent="addItemAndClear(todo)">
+        <input v-model="todo" type="text">
+        <button>Add</button>
+    </form>
 </template>
 
 <script>
-export default {
-  name: 'TodoList',
-    setup () {
-        
+import { ref } from 'vue'
+import { useTodoListStore } from '@/store/useTodoListStore';
 
-        return {}
-    }
-}
+export default {
+  name: 'TodoForm',
+    setup () {
+        const todo = ref("");
+        // use Pinia store:
+        const store = useTodoListStore()
+
+        function addItemAndClear(item) {
+            if(item.length === 0) {
+                return
+            }
+            // invokes function in the store:
+            store.addTodo(item)
+            todo.value = ''
+        }
+
+        return { todo };
+    },
+};
 </script>
 
 <style lang="scss" scoped>
